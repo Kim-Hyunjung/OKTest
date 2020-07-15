@@ -11,28 +11,43 @@ class AOKTCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
-	/** Side view camera */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* SideViewCameraComponent;
-
-	/** Camera boom positioning the camera beside the character */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	class USpringArmComponent* CameraBoom;
+public:
+	AOKTCharacter();
 
 protected:
-	/** Called for side to side input */
-	void MoveRight(float Val);
-
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 	// End of APawn interface
 
+	// Input
+	void Input_Axis(float InVal);
+	void Input_KeyCodeQ_Pressed();
+	void Input_KeyCodeQ_Released();
+	void Input_KeyCodeW_Pressed();
+	void Input_KeyCodeW_Released();
+
+	// Fire
+	virtual void Fire();
+	virtual void NormalFire();
+	virtual void ChargeFire();
+	virtual void SplitFire();
+	virtual void ReflectFire();
 
 public:
-	AOKTCharacter();
+	// Camera
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	class UCameraComponent* SideViewCameraComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	class USpringArmComponent* CameraBoom;
 
-	/** Returns SideViewCameraComponent subobject **/
-	FORCEINLINE class UCameraComponent* GetSideViewCameraComponent() const { return SideViewCameraComponent; }
-	/** Returns CameraBoom subobject **/
-	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
+	// Input
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Input)
+	float LastSec_KeyCodeQ;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Input)
+	float LastSec_KeyCodeW;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	float ChargeTime = 3.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	float SplitTime = 1.0f;
 };

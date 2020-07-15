@@ -40,24 +40,101 @@ AOKTCharacter::AOKTCharacter()
 	GetCharacterMovement()->GroundFriction = 3.f;
 	GetCharacterMovement()->MaxWalkSpeed = 600.f;
 	GetCharacterMovement()->MaxFlySpeed = 600.f;
-
-	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
-	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 }
-
-//////////////////////////////////////////////////////////////////////////
-// Input
 
 void AOKTCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
-	// set up gameplay key bindings
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
-	PlayerInputComponent->BindAxis("MoveRight", this, &AOKTCharacter::MoveRight);
+	PlayerInputComponent->BindAxis("MoveRight", this, &AOKTCharacter::Input_Axis);
+
+	PlayerInputComponent->BindAction("KeyCodeQ", IE_Pressed, this, &AOKTCharacter::Input_KeyCodeQ_Pressed);
+	PlayerInputComponent->BindAction("KeyCodeQ", IE_Released, this, &AOKTCharacter::Input_KeyCodeQ_Released);
+	PlayerInputComponent->BindAction("KeyCodeW", IE_Pressed, this, &AOKTCharacter::Input_KeyCodeW_Pressed);
+	PlayerInputComponent->BindAction("KeyCodeW", IE_Released, this, &AOKTCharacter::Input_KeyCodeW_Released);
 }
 
-void AOKTCharacter::MoveRight(float Value)
+void AOKTCharacter::Input_Axis(float InVal)
 {
-	// add movement in that direction
-	AddMovementInput(FVector(0.f,-1.f,0.f), Value);
+	AddMovementInput(FVector::LeftVector, InVal);
+}
+
+void AOKTCharacter::Input_KeyCodeQ_Pressed()
+{
+	LastSec_KeyCodeQ = GetWorld()->GetTimeSeconds();
+}
+
+void AOKTCharacter::Input_KeyCodeQ_Released()
+{
+	if (LastSec_KeyCodeQ == TNumericLimits<float>::Min())
+		return;
+
+	float CurrentSec = GetWorld()->GetTimeSeconds();
+	float PressSec_Q = CurrentSec - LastSec_KeyCodeQ;
+
+	bool bChargeFire = PressSec_Q >= ChargeTime;
+	if (bChargeFire)
+	{
+		ChargeFire();
+	}
+	else
+	{
+		NormalFire();
+	}
+}
+
+void AOKTCharacter::Input_KeyCodeW_Pressed()
+{
+	LastSec_KeyCodeW = GetWorld()->GetTimeSeconds();
+
+	float CurrentSec = LastSec_KeyCodeW;
+	float PressSec_Q = CurrentSec - LastSec_KeyCodeQ;
+
+	bool bSplitFire = PressSec_Q <= SplitTime;
+	if (bSplitFire)
+	{
+		SplitFire();
+	}
+}
+
+void AOKTCharacter::Input_KeyCodeW_Released()
+{
+	if (LastSec_KeyCodeW == TNumericLimits<float>::Min())
+		return;
+
+	ReflectFire();
+}
+
+void AOKTCharacter::Fire()
+{
+	LastSec_KeyCodeQ = TNumericLimits<float>::Min();
+	LastSec_KeyCodeW = TNumericLimits<float>::Min();
+}
+
+void AOKTCharacter::NormalFire()
+{
+	Fire();
+
+	UE_LOG(LogTemp, Log, TEXT("NormalFire"));
+}
+
+void AOKTCharacter::ChargeFire()
+{
+	Fire();
+
+	UE_LOG(LogTemp, Log, TEXT("ChargeFire"));
+}
+
+void AOKTCharacter::SplitFire()
+{
+	Fire();
+
+	UE_LOG(LogTemp, Log, TEXT("SplitFire"));
+}
+
+void AOKTCharacter::ReflectFire()
+{
+	Fire();
+
+	UE_LOG(LogTemp, Log, TEXT("ReflectFire"));
 }
