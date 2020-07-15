@@ -6,6 +6,8 @@
 #include "OKTProjectileBase.h"
 #include "OKTProjectile_Split.generated.h"
 
+class UArrowComponent;
+
 UCLASS()
 class AOKTProjectile_Split : public AOKTProjectileBase
 {
@@ -13,4 +15,10 @@ class AOKTProjectile_Split : public AOKTProjectileBase
 
 public:
 	AOKTProjectile_Split();
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UArrowComponent* LeftArrow;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UArrowComponent* RightArrow;
 };

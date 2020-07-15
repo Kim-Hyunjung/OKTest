@@ -21,13 +21,15 @@ public:
 protected:
 	void BeginPlay() override;
 
+	virtual void Disappear();
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float DestroyTime = 3.0f;
 
 protected:
-	UPROPERTY()
-	UArrowComponent* ArrowComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UArrowComponent* DefaultArrow;
 	UPROPERTY()
 	float AccumulateTime;
 };

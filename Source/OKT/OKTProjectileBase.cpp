@@ -10,8 +10,9 @@ AOKTProjectileBase::AOKTProjectileBase()
 	USceneComponent* SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent"));
 	RootComponent = SceneComponent;
 
-	ArrowComponent = CreateDefaultSubobject<UArrowComponent>(TEXT("BaseArrow"));
-	ArrowComponent->SetupAttachment(GetRootComponent());
+	DefaultArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("DefaultArrow"));
+	DefaultArrow->SetupAttachment(GetRootComponent());
+	DefaultArrow->SetHiddenInGame(false);
 }
 
 void AOKTProjectileBase::Tick(float DeltaSeconds)
@@ -21,7 +22,7 @@ void AOKTProjectileBase::Tick(float DeltaSeconds)
 	AccumulateTime += DeltaSeconds;
 	if (AccumulateTime >= DestroyTime) 
 	{
-		Destroy();
+		Disappear();
 	}
 }
 
@@ -30,4 +31,9 @@ void AOKTProjectileBase::BeginPlay()
 	Super::BeginPlay();
 
 	AccumulateTime = 0.0f;
+}
+
+void AOKTProjectileBase::Disappear()
+{
+	Destroy();
 }
