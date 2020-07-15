@@ -17,6 +17,9 @@ public:
 	AOKTProjectile_Split();
 
 protected:
+	void Disappear() override;
+
+protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UArrowComponent* LeftArrow;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)

@@ -16,3 +16,13 @@ AOKTProjectile_Split::AOKTProjectile_Split()
 	RightArrow->SetHiddenInGame(false);
 	RightArrow->SetRelativeRotation(FVector::RightVector.ToOrientationRotator());
 }
+
+void AOKTProjectile_Split::Disappear()
+{
+	UWorld* World = GetWorld();
+	World->SpawnActor<AOKTProjectileBase>(GetActorLocation(), DefaultArrow->GetComponentRotation());
+	World->SpawnActor<AOKTProjectileBase>(GetActorLocation(), LeftArrow->GetComponentRotation());
+	World->SpawnActor<AOKTProjectileBase>(GetActorLocation(), RightArrow->GetComponentRotation());
+
+	Super::Disappear();
+}
