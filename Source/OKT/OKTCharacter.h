@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "OKTCharacter.generated.h"
 
+class AOKTProjectileBase;
+
 UCLASS(config=Game)
 class AOKTCharacter : public ACharacter
 {
@@ -27,7 +29,7 @@ protected:
 	void Input_KeyCodeW_Released();
 
 	// Fire
-	virtual void Fire();
+	virtual AOKTProjectileBase* Fire(TSubclassOf<AOKTProjectileBase> InClass);
 	virtual void NormalFire();
 	virtual void ChargeFire();
 	virtual void SplitFire();
@@ -45,7 +47,6 @@ public:
 	float LastSec_KeyCodeQ;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Input)
 	float LastSec_KeyCodeW;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	float ChargeTime = 3.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)

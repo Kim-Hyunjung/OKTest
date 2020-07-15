@@ -6,6 +6,10 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "OKTProjectileBase.h"
+#include "OKTProjectile_Charge.h"
+#include "OKTProjectile_Split.h"
+#include "OKTProjectile_Reflect.h"
 
 AOKTCharacter::AOKTCharacter()
 {
@@ -105,36 +109,35 @@ void AOKTCharacter::Input_KeyCodeW_Released()
 	ReflectFire();
 }
 
-void AOKTCharacter::Fire()
+AOKTProjectileBase* AOKTCharacter::Fire(TSubclassOf<AOKTProjectileBase> InClass)
 {
 	LastSec_KeyCodeQ = TNumericLimits<float>::Min();
 	LastSec_KeyCodeW = TNumericLimits<float>::Min();
+
+	FVector SpawnLoc = GetActorLocation();
+	SpawnLoc += GetActorForwardVector() * 20.0f;
+	SpawnLoc.Z -= GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+
+	AOKTProjectileBase* Projectile = GetWorld()->SpawnActor<AOKTProjectileBase>(InClass, SpawnLoc, GetActorRotation());
+	return Projectile;
 }
 
 void AOKTCharacter::NormalFire()
 {
-	Fire();
-
-	UE_LOG(LogTemp, Log, TEXT("NormalFire"));
+	Fire(AOKTProjectileBase::StaticClass());
 }
 
 void AOKTCharacter::ChargeFire()
 {
-	Fire();
-
-	UE_LOG(LogTemp, Log, TEXT("ChargeFire"));
+	Fire(AOKTProjectile_Charge::StaticClass());
 }
 
 void AOKTCharacter::SplitFire()
 {
-	Fire();
-
-	UE_LOG(LogTemp, Log, TEXT("SplitFire"));
+	Fire(AOKTProjectile_Split::StaticClass());
 }
 
 void AOKTCharacter::ReflectFire()
 {
-	Fire();
-
-	UE_LOG(LogTemp, Log, TEXT("ReflectFire"));
+	Fire(AOKTProjectile_Reflect::StaticClass());
 }
