@@ -54,9 +54,6 @@ void AOKTCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInput
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AOKTCharacter::MoveRight);
-
-	PlayerInputComponent->BindTouch(IE_Pressed, this, &AOKTCharacter::TouchStarted);
-	PlayerInputComponent->BindTouch(IE_Released, this, &AOKTCharacter::TouchStopped);
 }
 
 void AOKTCharacter::MoveRight(float Value)
@@ -64,15 +61,3 @@ void AOKTCharacter::MoveRight(float Value)
 	// add movement in that direction
 	AddMovementInput(FVector(0.f,-1.f,0.f), Value);
 }
-
-void AOKTCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
-{
-	// jump on any touch
-	Jump();
-}
-
-void AOKTCharacter::TouchStopped(const ETouchIndex::Type FingerIndex, const FVector Location)
-{
-	StopJumping();
-}
-
