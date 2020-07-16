@@ -13,4 +13,10 @@ class AOKTProjectile_Reflect : public AOKTProjectileBase
 
 public:
 	AOKTProjectile_Reflect();
+
+	UFUNCTION()
+	void OnStop(const FHitResult& Hit);
+
+protected:
+	virtual void Blocked() override;
 };

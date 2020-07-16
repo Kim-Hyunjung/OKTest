@@ -2,19 +2,18 @@
 
 #include "OKTProjectileBase.h"
 #include "Components/ArrowComponent.h"
-#include <GameFramework/ProjectileMovementComponent.h>
-#include <Components/SphereComponent.h>
+#include "GameFramework/ProjectileMovementComponent.h"
+#include "Components/SphereComponent.h"
+#include "Engine/CollisionProfile.h"
 
 AOKTProjectileBase::AOKTProjectileBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
-	USceneComponent* SceneComponent = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent"));
-	RootComponent = SceneComponent;
-
+	
 	CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComponent"));
-	CollisionComponent->InitSphereRadius(15.0f);
-	CollisionComponent->BodyInstance.SetInstanceNotifyRBCollision(true);
+	CollisionComponent->SetHiddenInGame(false);
+	CollisionComponent->SetCollisionProfileName(FName("CharacterMesh"));
+	RootComponent = CollisionComponent;
 
 	DefaultArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("DefaultArrow"));
 	DefaultArrow->SetupAttachment(GetDefaultAttachComponent());
@@ -35,11 +34,14 @@ void AOKTProjectileBase::Tick(float DeltaSeconds)
 	{
 		Disappear();
 	}
+	MoveComponent->Velocity = GetActorForwardVector() * Speed;
 }
 
 void AOKTProjectileBase::NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit)
 {
 	Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
+
+	Blocked();
 }
 
 void AOKTProjectileBase::BeginPlay()
@@ -47,7 +49,11 @@ void AOKTProjectileBase::BeginPlay()
 	Super::BeginPlay();
 
 	AccumulateTime = 0.0f;
-	MoveComponent->Velocity = (GetActorForwardVector() * Speed);
+}
+
+void AOKTProjectileBase::Blocked()
+{
+	Destroy();
 }
 
 void AOKTProjectileBase::Disappear()

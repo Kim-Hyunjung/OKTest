@@ -116,7 +116,7 @@ AOKTProjectileBase* AOKTCharacter::Fire(TSubclassOf<AOKTProjectileBase> InClass)
 
 	FVector SpawnLoc = GetActorLocation();
 	SpawnLoc += GetActorForwardVector() * 20.0f;
-	SpawnLoc.Z -= GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
+	SpawnLoc.Z -= GetCapsuleComponent()->GetScaledCapsuleHalfHeight() - 50.f;
 
 	AOKTProjectileBase* Projectile = GetWorld()->SpawnActor<AOKTProjectileBase>(InClass, SpawnLoc, GetActorRotation());
 	return Projectile;

@@ -24,6 +24,7 @@ public:
 protected:
 	void BeginPlay() override;
 
+	virtual void Blocked();
 	virtual void Disappear();
 
 public:
