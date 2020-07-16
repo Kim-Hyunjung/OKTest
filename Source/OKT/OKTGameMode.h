@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "OKTGameMode.generated.h"
 
+class UOKTDefaultHUD;
+
 UCLASS(minimalapi)
 class AOKTGameMode : public AGameModeBase
 {
@@ -13,7 +15,11 @@ class AOKTGameMode : public AGameModeBase
 
 public:
 	AOKTGameMode();
+
+protected:
+	void BeginPlay() override;
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Classes)
+	TSubclassOf<UOKTDefaultHUD> DefaultHUDClass;
 };
-
-
-
