@@ -16,6 +16,13 @@ class AOKTCharacter : public ACharacter
 public:
 	AOKTCharacter();
 
+	// UI
+	void ResetProjectileCount();
+	int GetNormalProjectileCount() const { return NormalCount; }
+	int GetChargeProjectileCount() const { return ChargeCount; }
+	int GetSplitProjectileCount() const { return SplitCount; }
+	int GetReflectProjectileCount() const { return ReflectCount; }
+
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
@@ -51,4 +58,15 @@ public:
 	float ChargeTime = 3.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	float SplitTime = 1.0f;
+
+protected:
+	// UI
+	UPROPERTY()
+	int NormalCount = 0;
+	UPROPERTY()
+	int ChargeCount = 0;
+	UPROPERTY()
+	int SplitCount = 0;
+	UPROPERTY()
+	int ReflectCount = 0;
 };

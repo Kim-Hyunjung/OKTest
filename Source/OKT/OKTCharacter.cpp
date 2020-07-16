@@ -44,6 +44,9 @@ AOKTCharacter::AOKTCharacter()
 	GetCharacterMovement()->GroundFriction = 3.f;
 	GetCharacterMovement()->MaxWalkSpeed = 600.f;
 	GetCharacterMovement()->MaxFlySpeed = 600.f;
+
+	LastSec_KeyCodeQ = TNumericLimits<float>::Min();
+	LastSec_KeyCodeW = TNumericLimits<float>::Min();
 }
 
 void AOKTCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -124,20 +127,44 @@ AOKTProjectileBase* AOKTCharacter::Fire(TSubclassOf<AOKTProjectileBase> InClass)
 
 void AOKTCharacter::NormalFire()
 {
-	Fire(AOKTProjectileBase::StaticClass());
+	auto Projectile = Fire(AOKTProjectileBase::StaticClass());
+	if (Projectile != nullptr)
+	{
+		++NormalCount;
+	}
 }
 
 void AOKTCharacter::ChargeFire()
 {
-	Fire(AOKTProjectile_Charge::StaticClass());
+	auto Projectile = Fire(AOKTProjectile_Charge::StaticClass());
+	if (Projectile != nullptr)
+	{
+		++ChargeCount;
+	}
 }
 
 void AOKTCharacter::SplitFire()
 {
-	Fire(AOKTProjectile_Split::StaticClass());
+	auto Projectile = Fire(AOKTProjectile_Split::StaticClass());
+	if (Projectile != nullptr)
+	{
+		++SplitCount;
+	}
 }
 
 void AOKTCharacter::ReflectFire()
 {
-	Fire(AOKTProjectile_Reflect::StaticClass());
+	auto Projectile = Fire(AOKTProjectile_Reflect::StaticClass());
+	if (Projectile != nullptr)
+	{
+		++ReflectCount;
+	}
+}
+
+void AOKTCharacter::ResetProjectileCount()
+{
+	NormalCount = 0;
+	ChargeCount = 0;
+	SplitCount = 0;
+	ReflectCount = 0;
 }
