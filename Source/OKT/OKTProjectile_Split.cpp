@@ -6,15 +6,17 @@
 
 AOKTProjectile_Split::AOKTProjectile_Split()
 {
+	FRotator LeftRot = FVector::LeftVector.ToOrientationRotator() * 0.5f;
 	LeftArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("LeftArrow"));
 	LeftArrow->SetupAttachment(GetRootComponent());
 	LeftArrow->SetHiddenInGame(false);
-	LeftArrow->SetRelativeRotation(FVector::LeftVector.ToOrientationRotator());
+	LeftArrow->SetRelativeRotation(LeftRot);
 
+	FRotator RightRot = FVector::RightVector.ToOrientationRotator() * 0.5f;
 	RightArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("RightArrow"));
 	RightArrow->SetupAttachment(GetRootComponent());
 	RightArrow->SetHiddenInGame(false);
-	RightArrow->SetRelativeRotation(FVector::RightVector.ToOrientationRotator());
+	RightArrow->SetRelativeRotation(RightRot);
 }
 
 void AOKTProjectile_Split::Disappear()
